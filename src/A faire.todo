@@ -1,0 +1,39 @@
+A faire sur le projet:
+	-2 JavaDoc: finir et corriger fautes
+	-4 Developpement
+	-3 GitHub
+
+
+
+Javadoc
+	+-1 Reservation
+	-1 Calendrier
+	+-1 Camping
+	+-1 Client
+	+-1 Emplacement
+	+-1 FAjoutReserv
+	+-1 FListeReserv
+	+-1 FenetreEmplacement: (a synchro aussi se serrai cool)
+	+-1 ButtonEmp
+	+-1 GestionTemp
+	+-1 Interaction
+
+
+Presentation
+	-1 Faire diapo
+	-2 Doit tenir 20min
+	-1 Notes
+	-1 Présenter le projets:
+		Ces contraintes
+		Les difficultés rencontrés
+		La gestion du projet
+		Petite démo
+
+Developpement
+	-4 Mettre en place la bonne fermeture des fenetres
+	-3 Synchroniser la couleur des emplacment à la suppression de la réservation courante
+	-3 Couleur dans le calendrier au dates réservés
+	-3 Serialization
+	-2 Liste des clients
+	-2 Synchroniser la fenetre de résumé de l'état de l'emplacement
+	-2 Permettre de changer la date: Faire un calendrier popup
