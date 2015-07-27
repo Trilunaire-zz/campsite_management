@@ -31,9 +31,10 @@ Presentation
 
 Developpement
 	-4 Mettre en place la bonne fermeture des fenetres
-	-3 Synchroniser la couleur des emplacment à la suppression de la réservation courante
-	-3 Couleur dans le calendrier au dates réservés
+	+3 Synchroniser la couleur des emplacment à la suppression de la réservation courante
+	+3 Couleur dans le calendrier au dates réservés
 	-3 Serialization
 	-2 Liste des clients
-	-2 Synchroniser la fenetre de résumé de l'état de l'emplacement
+	-3 Reserver à partir du calendrier
+	+2 Synchroniser la fenetre de résumé de l'état de l'emplacement
 	-2 Permettre de changer la date: Faire un calendrier popup

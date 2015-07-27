@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +56,8 @@ public class FListeReservation extends JFrame{
 		this.setSize(500, 300);
 		this.setMinimumSize(getSize());
 		this.setLocationRelativeTo(null);
+		
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		this.main=new JPanel();
 		this.panelBoutton=new JPanel();

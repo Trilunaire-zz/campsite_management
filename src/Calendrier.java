@@ -13,7 +13,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
+
+/**
+ * Classe qui défini le calendrier qui permet de gérer les différentes réservations d'un emplacement
+ * @author trilunaire
+ * @see JFrame
+ */
 @SuppressWarnings("serial")
 public class Calendrier extends JFrame{
 	static private String[] libelle={"L","M","M","J","V","S","D"};
@@ -36,13 +43,13 @@ public class Calendrier extends JFrame{
 	private JButton flecheDroite;
 	private JButton flecheGauche;
 	
-	@SuppressWarnings("unused")
 	private Emplacement emp;
 	
 	public Calendrier(Emplacement e){
 		this.setTitle("planing");
 		this.setMinimumSize(new Dimension(400,400));
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		this.emp=e;
 		this.calendarUser=GestionTemp.get_CalendarToday();
@@ -54,6 +61,9 @@ public class Calendrier extends JFrame{
 		this.createGUI();
 	}
 	
+	/**
+	 * Méthode qui permet de créer toute l'interface du calendrier
+	 */
 	public void createGUI(){
 		pPrincipal=new JPanel();
 		pPrincipal.setLayout(new BoxLayout(pPrincipal,BoxLayout.Y_AXIS));
@@ -70,6 +80,9 @@ public class Calendrier extends JFrame{
 	}
 	
 	
+	/**
+	 * Méthode de classe qui permet de mettre à jour la disposition des jours du calendrier lors du changement de mois
+	 */
 	public void majPanel(){
 		boutonGrise.clear();
 		boutonReserve.clear();
@@ -123,19 +136,23 @@ public class Calendrier extends JFrame{
 				if(j<jourReserve.size() && String.valueOf(i).compareTo(jourReserve.get(j))==0){
 					boutonReserve.add(new JButton(i+""));
 					boutonReserve.get(j).setBackground(Color.RED);
+					boutonReserve.get(j).addActionListener(new BoutonJour());
 					pJours.add(boutonReserve.get(j));
 					j++;
 				}else{
-					pJours.add(new JButton(i+""));
+					pJours.add(new JButton(i+""){
+									{addActionListener(new BoutonJour());}
+									});
 				}
 			}else{
-				pJours.add(new JButton(i+""));
+				pJours.add(new JButton(i+""){
+					{addActionListener(new BoutonJour());}
+					});
 			}
 
 		}
 		
 		//on doit afficher un certain nombre de jours après la fin du mois, sinon le gridLayout est déformé (6 colones au lieu de sept)
-		
 		nbreJoursRAfficher=42-(nbreDeJours+boutonGrise.size());
 		for(i=0; i<nbreJoursRAfficher; i++){
 			boutonGrise.add(new JButton(copie.get(Calendar.DAY_OF_MONTH)+""));
@@ -145,6 +162,10 @@ public class Calendrier extends JFrame{
 		}
 	}
 	
+	/**
+	 * Méthode qui permet de créer le Panel de séléction du mois
+	 * @return un JPanel composé de deux JButtons permettant le changement du mois
+	 */
 	public JPanel selectionMois(){
 		pMois=new JPanel();
 		lMois=new JLabel();
@@ -166,6 +187,9 @@ public class Calendrier extends JFrame{
 		return pMois;
 	}
 	
+	/**
+	 * Méthode d'instance qui permet de mettre à jour le JLabel correspondant au nom du mois
+	 */
 	public void updateMonthName(){
 		if(calendarUser.get(Calendar.YEAR)==anneeCourante){
 			lMois.setText(mois[calendarUser.get(Calendar.MONTH)]);
@@ -175,6 +199,11 @@ public class Calendrier extends JFrame{
 		lMois.setAlignmentX(Box.CENTER_ALIGNMENT);
 	}	
 	
+	/**
+	 * Classe interne definissant un listener qui sera déclenché lors d'un appuis sur un bouton pour changer de mois
+	 * @author trilunaire
+	 * @see ActionListener
+	 */
 	public class SelectionMois implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -186,6 +215,32 @@ public class Calendrier extends JFrame{
 				calendarUser.set(Calendar.MONTH,calendarUser.get(Calendar.MONTH)+1);
 				updateMonthName();//test
 				majPanel();
+			}
+		}
+	}
+	
+	
+	
+	public class BoutonJour implements ActionListener{
+		int jourSelection;
+		
+		Calendar calTmp=GestionTemp.get_CalendarToday();
+		JButton btTmp;
+		
+		FAjoutReserv fajout;
+		
+		public void actionPerformed(ActionEvent e){
+			//prendre le bouton, puis la valeur du bouton, et faire une fenetre d'ajout de reservation
+			btTmp= (JButton) e.getSource();
+			
+			if(btTmp.getBackground()!=Color.RED){//si la couleur du bouton est autre que rouge (si on a pas séléctionné un jour réservé)
+				jourSelection= Integer.parseInt(btTmp.getText());
+				System.out.println("Jour séléctionné: "+jourSelection);
+				calTmp.set(calendarUser.get(Calendar.YEAR), calendarUser.get(Calendar.MONTH), jourSelection);
+				//instancier une fenetre de ajout de reservation à partir d'un calendar
+				
+				fajout= new FAjoutReserv(emp, calTmp);
+				fajout.setVisible(true);
 			}
 		}
 	}

@@ -64,9 +64,43 @@ public class FAjoutReserv extends JDialog{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
-		this.createGUI();
+		this.jourArrive = new JTextField();
+		this.moisArrive = new JTextField();
+		this.anneeArrive = new JTextField(GestionTemp.get_CalendarToday().get(Calendar.YEAR)+"");
+		this.anneeDepart = new JTextField(GestionTemp.get_CalendarToday().get(Calendar.YEAR)+"");
+		
 		this.date_arrive=GestionTemp.get_CalendarToday();
 		this.date_depart=GestionTemp.get_CalendarToday();
+		
+		this.createGUI();
+	}
+	
+	/**
+	 * Constructeur appelé lorsque l'on selectionne une date d'arrivé
+	 * @param e
+	 * @param arrive
+	 */
+	public FAjoutReserv(Emplacement e, Calendar arrive){
+		this.emp=e;
+		this.setTitle("Ajouter reservation");
+		this.setSize(280,200);
+		this.setMinimumSize(this.getSize());
+		this.setModal(true);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		
+		this.jourArrive = new JTextField(arrive.get(Calendar.DAY_OF_MONTH)+"");
+		this.jourArrive.setEditable(false);
+		this.moisArrive = new JTextField((arrive.get(Calendar.MONTH)+1)+"");
+		this.moisArrive.setEditable(false);
+		this.anneeArrive = new JTextField(arrive.get(Calendar.YEAR)+"");
+		this.anneeArrive.setEditable(false);
+		this.anneeDepart = new JTextField(arrive.get(Calendar.YEAR)+"");
+		
+		this.date_arrive=arrive;
+		this.date_depart=GestionTemp.get_CalendarToday();
+		
+		this.createGUI();
 	}
 	
 	/**
@@ -99,7 +133,7 @@ public class FAjoutReserv extends JDialog{
 		
 		jourDepart = new JTextField();
 		moisDepart = new JTextField();
-		anneeDepart = new JTextField(GestionTemp.get_CalendarToday().get(Calendar.YEAR)+"");
+		
 
 		jourDepart.setPreferredSize(new Dimension(W_DATEFIELD,H_TEXTFIELD));
 		jourDepart.setMaximumSize(new Dimension(W_DATEFIELD,H_TEXTFIELD));
@@ -128,10 +162,6 @@ public class FAjoutReserv extends JDialog{
 	public JPanel arrive(){
 		JPanel pTmp = new JPanel();
 		pTmp.setLayout(new BoxLayout(pTmp,BoxLayout.X_AXIS));
-		
-		jourArrive = new JTextField();
-		moisArrive = new JTextField();
-		anneeArrive = new JTextField(GestionTemp.get_CalendarToday().get(Calendar.YEAR)+"");
 
 		jourArrive.setPreferredSize(new Dimension(W_DATEFIELD,H_TEXTFIELD));
 		jourArrive.setMaximumSize(new Dimension(W_DATEFIELD,H_TEXTFIELD));
