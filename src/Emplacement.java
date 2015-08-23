@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -7,13 +8,14 @@ import java.util.Vector;
 * @Description La classe qui definit les emplacements.
 * @author Tristan Laurent and Simon Brigant
 */
-public class Emplacement{
+@SuppressWarnings("serial")
+public class Emplacement implements Serializable{
 	private int num;
 	private boolean libre;
 	private boolean vide;
 	private Vector<Reservation> lesReserv;
 	private ButtonEmp associationBouton;
-	
+
 	/**
 	* Constructeur d'un emplacement à partir d'un chiffre
 	* @param int i
@@ -23,8 +25,9 @@ public class Emplacement{
 		this.num = i;
 		this.libre = true;
 		this.vide = true;
+		InfoCamping.ajoutEmpListe(this);
 	}
-	
+
 	/**
 	* Accesseur qui renvois la liste des réservation associées à cet emplacement
 	* @return Vector<Reservation>
@@ -32,15 +35,16 @@ public class Emplacement{
 	public Vector<Reservation> getListeReserv(){
 		return lesReserv;
 	}
-	
+
 	/**
 	 * Accesseur qui permet de changer la valeur du vecteur de réservation
 	 * @param le nouveau vecteur de reservation
 	 */
 	public void setListeReserv(Vector<Reservation> new_v){
 		this.lesReserv=new_v;
+		InfoCamping.majEmpInfo(this);
 	}
-	
+
 	/**
 	* Une méthode qui ajoute une reservation dans la liste des réservations
 	* @param Reservation new_reservation la réservation à ajouter
@@ -51,9 +55,10 @@ public class Emplacement{
 		}else{
 			this.lesReserv.add(new_reservation);
 			System.out.println("Reservation ajoute"); //on affichera un message de confirmation
+			InfoCamping.majEmpInfo(this);
 		}
 	}
-	
+
 	/**
 	* Méthode d'instance qui supprime une réservation de la liste
 	* @param Reservation La réservation à enlever
@@ -62,18 +67,19 @@ public class Emplacement{
 		if(this.lesReserv.contains(old_Reservation)){
 			this.lesReserv.remove(old_Reservation);
 			System.out.println("La reservation a ete supprime");
+			InfoCamping.majEmpInfo(this);
 		}else{
 			System.out.println("Reservation inexistante pour le moment");
 		}
 	}
-	
+
 	/**
 	* Méthode d'instance qui renvois la réservation courante si elle existe et null dans le cas contraire, et met à jour l'état en fonction de la réservation
 	* @return Reservation la réservation correspondant à la date courante
 	*/
 	public Reservation getCurrentReservation(){
 		Reservation reservCourante=null;
-		
+
 		Calendar currentDate=GestionTemp.get_CalendarToday();
 		this.libre=true;
 		boolean reserve = false;
@@ -81,7 +87,7 @@ public class Emplacement{
 		//on met le calendrier à 23h59, car lors de la comparaison , même les minutes comptent
 		currentDate.set(Calendar.HOUR, 23);
 		currentDate.set(Calendar.MINUTE, 59);
-			
+
 		while(i<lesReserv.size() && !reserve){//pour toutes les Reservations on va voir si on en a une aujourd'hui
 			if((lesReserv.get(i).get_CalendarArrive().compareTo(currentDate)<0) && (lesReserv.get(i).get_CalendarDepart().compareTo(currentDate)>0)){
 				reserve=true;
@@ -91,10 +97,10 @@ public class Emplacement{
 			}
 			i++;
 		}
-		
+
 		return reservCourante;
 	}
-	
+
 	/**
 	* Accesseur pour obtenir le numero
 	* @return int le numero de l'emplacement
@@ -109,6 +115,7 @@ public class Emplacement{
 	*/
 	public void set_num(int new_num){
 		this.num = new_num;
+		InfoCamping.majEmpInfo(this);
 	}
 
 	/**
@@ -125,6 +132,7 @@ public class Emplacement{
 	*/
 	public void set_vide(boolean new_vide){
 		this.vide = new_vide;
+		InfoCamping.majEmpInfo(this);
 	}
 
 	/**
@@ -141,6 +149,7 @@ public class Emplacement{
 	*/
 	public void set_libre(boolean new_libre){
 		this.libre = new_libre;
+		InfoCamping.majEmpInfo(this);
 	}
 
 	/**
@@ -150,13 +159,14 @@ public class Emplacement{
 	public ButtonEmp get_associationBouton(){
 		return this.associationBouton;
 	}
-	
+
 	/**
 	* Modifie la valeur de associationBouton
 	* @param ButtonEmp la nouvelle association
 	*/
 	public void set_associationBouton(ButtonEmp new_associationBouton){
 		this.associationBouton = new_associationBouton;
+		InfoCamping.majEmpInfo(this);
 	}
 
 	/**
@@ -178,11 +188,11 @@ public class Emplacement{
 
 				nbreJourEntre=GestionTemp.nbJ_betweenTwoDates(resTmp.get_CalendarArrive(), resTmp.get_CalendarDepart());
 				calTmp=(Calendar) resTmp.get_CalendarArrive().clone(); //on prends la date d'arrivé du client
-				
+
 				for(int j=0; j<=nbreJourEntre; j++){
 					if(calTmp.get(Calendar.YEAR)==cal.get(Calendar.YEAR)){//si le calendrier temporaire (initialisé à la valeur d'arrivé du client) correspond au mois de la reservation, on ajout le premier jour, et on l'incrémente
 						if(calTmp.get(Calendar.MONTH)==cal.get(Calendar.MONTH)){
-							joursReserves.add(calTmp.get(Calendar.DAY_OF_MONTH)+"");	
+							joursReserves.add(calTmp.get(Calendar.DAY_OF_MONTH)+"");
 							calTmp.set(Calendar.DAY_OF_MONTH, calTmp.get(Calendar.DAY_OF_MONTH)+1);
 						}else{//sinon on incrémente juste le jour
 							calTmp.set(Calendar.DAY_OF_MONTH, calTmp.get(Calendar.DAY_OF_MONTH)+1);
@@ -210,7 +220,7 @@ public class Emplacement{
 		btmp.get_bouton().setBackground(this.getCouleur());
 		this.set_associationBouton(btmp);
 	}
-	
+
 	/**
 	 * La méthode qui est appelé lorsqu'on veut ajouter un emplacement
 	 * @param Vector<Integer> v : C'est le vecteur de numéro libre duquel on extrait un numéro qu'on assigne à l'emplacement.
@@ -219,7 +229,7 @@ public class Emplacement{
 	 */
 	public void ajouter(Vector<Integer> v, ButtonEmp bEmp){
 		int num;
-		
+
 		this.set_vide(false);
 		this.set_libre(true);
 		this.set_associationBouton(bEmp);
@@ -228,8 +238,10 @@ public class Emplacement{
 		this.set_num(num);
 		bEmp.get_bouton().setBackground(Color.GREEN);
 		bEmp.get_bouton().setForeground(Color.BLACK);
+
+		InfoCamping.majEmpInfo(this);
 	}
-	
+
 	/**
 	 * La methode appelee lorsqu'on supprime un emplacement
 	 * @param Vector<Integer> v Le vecteur de numero libre dans lequel on rajoute le numero de l'emplacement supprime.
@@ -238,7 +250,7 @@ public class Emplacement{
 	 */
 	public void supprimer(Vector<Integer> v, ButtonEmp bEmp){
 		int n;
-		
+
 		this.set_vide(true);
 		n = this.get_num();
 		bEmp.get_bouton().setText("");
@@ -247,8 +259,9 @@ public class Emplacement{
 		bEmp.get_bouton().setBackground(Color.WHITE);
 		bEmp.get_bouton().setForeground(Color.WHITE);
 		v.add(n); // on rajoute son numero dans le tableau de num libre
+		InfoCamping.majEmpInfo(this);
 	}
-	
+
 	/**
 	 * La methode appelee lorsqu'on deplace un emplacement.
 	 * @param Vector<Integer> num_libre: Le vecteur de numero libre.
@@ -260,10 +273,10 @@ public class Emplacement{
 	public boolean deplacer(Vector<Integer> num_libre, ButtonEmp selectionne, ButtonEmp destination){
 		boolean d = true;
 		int num;
-		
+
 		if( destination.get_emp().get_vide()==true ){
 			num = selectionne.get_emp().get_num();
-			
+
 			/* ici c'est basiquement la methode "ajoute" sauf qu'on la modifie de telle facon qu'elle ne prenne pas le minimum
 			mais le numero de l'emplacement deplace et on garde l'etat de l'emplacement deplace */
 			destination.get_emp().setListeReserv(selectionne.get_emp().getListeReserv());
@@ -274,24 +287,25 @@ public class Emplacement{
 			destination.get_bouton().setBackground(selectionne.get_emp().getCouleur());
 			destination.get_bouton().setForeground(Color.BLACK);
 			this.set_associationBouton(destination);
-			
+
 			//puis on nettois l'ancien emplacement
 			selectionne.get_emp().supprimer(num_libre, selectionne);
 			selectionne.get_emp().setListeReserv(new Vector<Reservation>());
 			num_libre.remove((Object)num);
 			d = false;
+			InfoCamping.majEmpInfo(this);
 		}
-		
+
 		return d;
 	}
-	
+
 	/**
 	 * La methode qui renvoie la couleur d'arriere plan necessaire en fonction de l'etat de l'emplacement
 	 * @return Color La couleur qu'on appliquera à l'emplacement.
 	 */
 	public Color getCouleur(){
 		Color retour = Color.WHITE;
-		
+
 		//libre mais pas vide
 		if(this.libre==true && this.vide==false){
 			retour = Color.GREEN;

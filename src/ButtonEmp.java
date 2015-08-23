@@ -1,10 +1,13 @@
+import java.io.Serializable;
+
 import javax.swing.JButton;
 
 /**
  * La classe qui permet de creer des instances d'association entre bouton et emplacement
  * @author Simon Brigant
  */
-class ButtonEmp {
+@SuppressWarnings("serial")
+class ButtonEmp implements Serializable{
 	private Emplacement emp;
 	private JButton bouton;
 	

@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.Vector;
 
 
@@ -6,7 +7,8 @@ import java.util.Vector;
 * @author Tristan Laurent
 * @version 1
 */
-public class Client{
+@SuppressWarnings("serial")
+public class Client implements Serializable{
 	private String nom; //a rassembler en HashMap<numero,nom>
 	private String genre; //choix entre homme et femme(pour afficher Mr ou Mme)
 	private Vector<Reservation> lesReservations; //un client peut avoir plusieurs reservations à son nom

@@ -1,10 +1,12 @@
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Classe définissant une réservation, qui comporte un client, une date d'arrivé et une date de départ
  * @author Tristan Laurent
  */
-public class Reservation{
+@SuppressWarnings("serial")
+public class Reservation implements Serializable{
 	private Client client;
 	private Calendar arrive;
 	private Calendar depart;
