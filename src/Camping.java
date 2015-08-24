@@ -178,6 +178,7 @@ public class Camping extends JFrame{
 	    getContentPane().setLayout(new BorderLayout());
 		lesEmp.setLayout(new GridLayout(10,10)); //les emplacement forment un tableau de 10 sur 10
 
+		//FIXME deux emplacements sont ajouté sans raison
 		if(!fileOpen){//si on n'a pas ouvert de fichier (en gros InfoCamp contient les infos en RAM)
 			for(int i=0 ; i<NB_EMP ; i++){
 				num_libre.add(i+1); //on initialise le tableau des num libres
@@ -196,9 +197,9 @@ public class Camping extends JFrame{
 		}else{
 			for(int i=0; i<NB_EMP; i++){
 				//TODO Comparer les information d'un emplacement déjà ajouté et celles d'un emplacement vide
-				collecEmp[i] = InfoCamping.get_empCamp().get(i+2).get_associationBouton(); //FIXME deux emplacements sont ajouté sans rason et les écouteurs ne fonctionnent pas
+				collecEmp[i] = InfoCamping.get_empCamp().get(i+2).get_associationBouton();
 				collecEmp[i].get_bouton().addMouseListener(new Souris());
-				lesEmp.add(collecEmp[i].get_bouton()); //bloque ici pour les emplacements non ajoutés
+				lesEmp.add(collecEmp[i].get_bouton()); //FIXME les emplacements n'apparessent pas imédiatement lors de l'ouverture d'un fichier;
 				System.out.println("Marche pour "+i);
 			}
 		}
@@ -419,7 +420,6 @@ public class Camping extends JFrame{
 				//si l'emplacement est vide et qu'on appuie sur le clic gauche
 				if( assoTrouve.get_emp().get_vide()==true && ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) ){
 					deplacement = assoTrouve.get_emp().deplacer(num_libre, assoTrouveInter, assoTrouve);
-					assoTrouve.get_emp().set_associationBouton(assoTrouve);
 				}
 				//si l'emplacement n'est pas vide et qu'on appuie sur le clic gauche
 				else if( assoTrouve.get_emp().get_vide()==false && ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) ){

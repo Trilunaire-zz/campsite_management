@@ -255,7 +255,7 @@ public class Emplacement implements Serializable{
 		n = this.get_num();
 		bEmp.get_bouton().setText("");
 		this.set_num(0);
-		this.set_associationBouton(null);
+		this.set_associationBouton(bEmp);
 		bEmp.get_bouton().setBackground(Color.WHITE);
 		bEmp.get_bouton().setForeground(Color.WHITE);
 		v.add(n); // on rajoute son numero dans le tableau de num libre
@@ -276,7 +276,6 @@ public class Emplacement implements Serializable{
 
 		if( destination.get_emp().get_vide()==true ){
 			num = selectionne.get_emp().get_num();
-
 			/* ici c'est basiquement la methode "ajoute" sauf qu'on la modifie de telle facon qu'elle ne prenne pas le minimum
 			mais le numero de l'emplacement deplace et on garde l'etat de l'emplacement deplace */
 			destination.get_emp().setListeReserv(selectionne.get_emp().getListeReserv());
@@ -289,8 +288,8 @@ public class Emplacement implements Serializable{
 			this.set_associationBouton(destination);
 
 			//puis on nettois l'ancien emplacement
-			selectionne.get_emp().supprimer(num_libre, selectionne);
-			selectionne.get_emp().setListeReserv(new Vector<Reservation>());
+			selectionne.get_emp().supprimer(num_libre,selectionne);
+			InfoCamping.majEmpInfo(selectionne.get_emp());
 			num_libre.remove((Object)num);
 			d = false;
 			InfoCamping.majEmpInfo(this);
